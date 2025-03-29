@@ -8,23 +8,24 @@ namespace QuadtreeCompression
 {
     internal static class Measurer
     {
-        public static double Variance(List<List<Pixel>> a, List<List<Pixel>> b)
+        public static double Variance(List<List<Pixel>> image)
         {
             return 0.0;
         }
-        public static double MeanAbsoluteDistance(List<List<Pixel>> a, List<List<Pixel>> b)
+        public static double MeanAbsoluteDistance(List<List<Pixel>> image)
         {
             return 0.0;
         }
-        public static double MaxPixelDifference(List<List<Pixel>> a, List<List<Pixel>> b)
+
+        public static double MaxPixelDifference(List<List<Pixel>> image)
         {
             return 0.0;
         }
-        public static double Entropy(List<List<Pixel>> a, List<List<Pixel>> b)
+        public static double Entropy(List<List<Pixel>> image)
         {
             return 0.0;
         }
-        public static double SSIM(List<List<Pixel>> a, List<List<Pixel>> b)
+        public static double SSIM(List<List<Pixel>> image)
         {
             return 0.0;
         }

@@ -72,7 +72,7 @@ namespace QuadtreeCompression
 
 
 
-        public static List<List<Pixel>> MatToPixelList(Mat image)
+        public static List<List<Pixel>> MatToPixels(Mat image)
         {
             List<List<Pixel>> result = new List<List<Pixel>>();
 
@@ -98,6 +98,31 @@ namespace QuadtreeCompression
             }
 
             return result;
+        }
+
+        public static Mat PixelsToMat(List<List<Pixel>> image)
+        {
+            int rows = image.Count;
+            int cols = image[0].Count;
+            Mat matImage = new Mat(rows, cols, DepthType.Cv8U, 3);
+
+            byte[] imageData = new byte[rows * cols * 3];
+
+            for (int y = 0; y < rows; y++)
+            {
+                for (int x = 0; x < cols; x++)
+                {
+                    int index = (y * cols + x) * 3;
+                    Pixel pixel = image[y][x];
+
+                    imageData[index] = (byte)pixel.B;
+                    imageData[index + 1] = (byte)pixel.G;
+                    imageData[index + 2] = (byte)pixel.R;
+                }
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(imageData, 0, matImage.DataPointer, imageData.Length);
+            return matImage;
         }
 
     }
