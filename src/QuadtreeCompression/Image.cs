@@ -10,49 +10,95 @@ using Emgu.CV;
 
 namespace QuadtreeCompression
 {
+    public class Pixel
+    {
+        public int R { get; set; }
+        public int G { get; set; }
+        public int B { get; set; }
+
+        public Pixel(int r, int g, int b)
+        {
+            R = r;
+            G = g;
+            B = b;
+        }
+    }
+
     internal static class Image
     {
-        public static void Show(Mat image, int width = 600)
+        private static readonly int _width = 600;
+        public static void Show(Mat image)
         {
-            int newHeight = (image.Height * width) / image.Width;
+            int newHeight = (image.Height * _width) / image.Width;
 
             Mat resizedImage = new Mat();
-            CvInvoke.Resize(image, resizedImage, new Size(width, newHeight), 0, 0, Inter.Linear);
+            CvInvoke.Resize(image, resizedImage, new Size(_width, newHeight), 0, 0, Inter.Linear);
 
             CvInvoke.Imshow("Resized Image", resizedImage);
             CvInvoke.WaitKey(0);
         }
 
-        public static void Extract(Mat image, out Mat blue, out Mat green, out Mat red)
+        public static void Show(List<List<Pixel>> image)
         {
-            VectorOfMat channels = new VectorOfMat();
-            CvInvoke.Split(image, channels);
+            int rows = image.Count;
+            int cols = image[0].Count;
 
-            blue = channels[0].Clone();
-            green = channels[1].Clone();
-            red = channels[2].Clone();
+            Mat ret = new Mat(rows, cols, DepthType.Cv8U, 3);
 
-            channels.Dispose();
+            byte[] imageData = new byte[rows * cols * 3];
+
+            for (int y = 0; y < rows; y++)
+            {
+                for (int x = 0; x < cols; x++)
+                {
+                    int index = (y * cols + x) * 3;
+                    Pixel pixel = image[y][x];
+
+                    imageData[index] = (byte)pixel.B;
+                    imageData[index + 1] = (byte)pixel.G;
+                    imageData[index + 2] = (byte)pixel.R;
+                }
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(imageData, 0, ret.DataPointer, imageData.Length);
+
+            int newHeight = (ret.Height * _width) / ret.Width;
+            Mat resizedImage = new Mat();
+            CvInvoke.Resize(ret, resizedImage, new Size(_width, newHeight), 0, 0, Inter.Linear);
+
+            CvInvoke.Imshow("Resized Image", resizedImage);
+            CvInvoke.WaitKey(0);
         }
 
-        public static List<List<int>> MatToList(Mat channel)
+
+
+        public static List<List<Pixel>> MatToPixelList(Mat image)
         {
-            List<List<int>> result = new List<List<int>>();
+            List<List<Pixel>> result = new List<List<Pixel>>();
 
-            byte[] imageData = new byte[channel.Rows * channel.Cols];
-            System.Runtime.InteropServices.Marshal.Copy(channel.DataPointer, imageData, 0, imageData.Length);
+            int rows = image.Rows;
+            int cols = image.Cols;
+            byte[] imageData = new byte[rows * cols * 3]; 
 
-            for (int y = 0; y < channel.Rows; y++)
+            System.Runtime.InteropServices.Marshal.Copy(image.DataPointer, imageData, 0, imageData.Length);
+
+            for (int y = 0; y < rows; y++)
             {
-                List<int> row = new List<int>();
-                for (int x = 0; x < channel.Cols; x++)
+                List<Pixel> row = new List<Pixel>();
+                for (int x = 0; x < cols; x++)
                 {
-                    row.Add(imageData[y * channel.Cols + x]);
+                    int index = (y * cols + x) * 3;
+                    int b = imageData[index];
+                    int g = imageData[index + 1];
+                    int r = imageData[index + 2];
+
+                    row.Add(new Pixel(r, g, b));
                 }
                 result.Add(row);
             }
 
             return result;
         }
+
     }
 }

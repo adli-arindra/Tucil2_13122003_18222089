@@ -12,10 +12,9 @@ namespace QuadtreeCompression
             string imagePath = "C:\\Users\\Adli\\Desktop\\ilegil\\semester 6\\stima\\Tucil2_13122003_18222089\\src\\QuadtreeCompression\\images\\rose.webp";
 
             Mat image = CvInvoke.Imread(imagePath, ImreadModes.Color);
-            Mat red, green, blue;
-            Image.Extract(image, out blue, out green, out red);
 
-            List<List<int>> RedInt = Image.MatToList(red);
+            List<List<Pixel>> pixels = Image.MatToPixelList(image);
+            Image.Show(image);
         }
     }
 }
