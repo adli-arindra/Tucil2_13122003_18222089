@@ -20,6 +20,8 @@ namespace QuadtreeCompression
 
             Mat mat = CvInvoke.Imread(inputPath, ImreadModes.Color);
             List<List<Pixel>> image = Image.MatToPixels(mat);
+
+            Console.WriteLine("Variance: " + Measurer.Variance(image));
         }
 
         static void Solve(List<List<Pixel>> image)
