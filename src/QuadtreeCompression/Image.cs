@@ -125,5 +125,75 @@ namespace QuadtreeCompression
             return matImage;
         }
 
+        public static void NormalizePixels(List<List<Pixel>> image, int startX, int startY, int width, int height)
+        {
+            long sumR = 0, sumG = 0, sumB = 0;
+            int totalPixels = width * height;
+
+            for (int y = startY; y < startY + height; y++)
+            {
+                for (int x = startX; x < startX + width; x++)
+                {
+                    sumR += image[y][x].R;
+                    sumG += image[y][x].G;
+                    sumB += image[y][x].B;
+                }
+            }
+
+            int meanR = (int)(sumR / totalPixels);
+            int meanG = (int)(sumG / totalPixels);
+            int meanB = (int)(sumB / totalPixels);
+
+            for (int y = startY; y < startY + height; y++)
+            {
+                for (int x = startX; x < startX + width; x++)
+                {
+                    image[y][x] = new Pixel(meanR, meanG, meanB);
+                }
+            }
+        }
+
+
+        public static List<List<List<Pixel>>> SplitIntoQuarters(List<List<Pixel>> image)
+        {
+            int rows = image.Count / 2;
+            int cols = image[0].Count / 2;
+
+            List<List<Pixel>> topLeft = new List<List<Pixel>>();
+            List<List<Pixel>> topRight = new List<List<Pixel>>();
+            List<List<Pixel>> bottomLeft = new List<List<Pixel>>();
+            List<List<Pixel>> bottomRight = new List<List<Pixel>>();
+
+            for (int y = 0; y < rows; y++)
+            {
+                topLeft.Add(image[y].GetRange(0, cols));
+                topRight.Add(image[y].GetRange(cols, cols));
+            }
+
+            for (int y = rows; y < rows * 2; y++)
+            {
+                bottomLeft.Add(image[y].GetRange(0, cols));
+                bottomRight.Add(image[y].GetRange(cols, cols));
+            }
+
+            return new List<List<List<Pixel>>> { topLeft, topRight, bottomLeft, bottomRight };
+        }
+
+        public static List<List<Pixel>> ExtractSubImage(List<List<Pixel>> image, int startX, int startY, int width, int height)
+        {
+            List<List<Pixel>> subImage = new List<List<Pixel>>();
+
+            for (int y = startY; y < startY + height; y++)
+            {
+                List<Pixel> row = new List<Pixel>();
+                for (int x = startX; x < startX + width; x++)
+                {
+                    row.Add(image[y][x]);
+                }
+                subImage.Add(row);
+            }
+
+            return subImage;
+        }
     }
 }
