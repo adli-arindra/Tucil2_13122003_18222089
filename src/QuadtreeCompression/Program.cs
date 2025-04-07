@@ -7,24 +7,27 @@ namespace QuadtreeCompression
 {
     internal class Program
     {
-        static string defaultInputPath = "C:\\Users\\Adli\\Desktop\\ilegil\\semester 6\\stima\\Tucil2_13122003_18222089\\src\\QuadtreeCompression\\images\\rose.webp";
-        static string defaultOutputPath = "C:\\Users\\Adli\\Desktop\\ilegil\\semester 6\\stima\\Tucil2_13122003_18222089\\src\\QuadtreeCompression\\output.png";
+        static string defaultInputPath = "D:\\semester 6\\stima\\Tucil2_13122003_18222089\\src\\QuadtreeCompression\\images\\rose.webp";
+        static string defaultOutputPath = "D:\\semester 6\\stima\\Tucil2_13122003_18222089\\src\\QuadtreeCompression\\output.png";
 
         static string 
             inputPath = defaultInputPath, 
             outputPath = defaultOutputPath;
         static int 
             methodIdx = 0, 
-            threshold = 200,
-            minBlockSize = 1000,
+            threshold = 20,
+            minBlockSize = 10,
             iterations = 0;
         static double compressionTarget;
 
         static void Main(string[] args)
         {
+            Console.WriteLine("sebutin methodIdx");
+            methodIdx = int.Parse(Console.ReadLine());
             Mat mat = CvInvoke.Imread(inputPath, ImreadModes.Color);
             List<List<Pixel>> image = Image.MatToPixels(mat);
 
+            Console.WriteLine("Solving...");
             Solve(image, 0, 0, image[0].Count, image.Count);
             Image.Show(image);
             Console.WriteLine(iterations);
