@@ -125,6 +125,11 @@ namespace QuadtreeCompression
             return matImage;
         }
 
+        public static void ExportMat(Mat image, string outputPath)
+        {
+            CvInvoke.Imwrite(outputPath, image);
+        }
+
         public static void NormalizePixels(List<List<Pixel>> image, int startX, int startY, int width, int height)
         {
             long sumR = 0, sumG = 0, sumB = 0;
