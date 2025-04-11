@@ -9,17 +9,23 @@ Sebelum menjalankan program, pastikan sistem telah memenuhi requirement berikut:
 - .NET SDK versi 7.0 atau lebih tinggi
 - Visual Studio 2022 atau editor lain yang mendukung C#
 
-## c. Cara menjalankan dan menggunakan program
+## c. Cara Kompilasi
+Jalankan command berikut
+```bash
+cd src/QuadtreeCompression
+dotnet build -o ../../bin
+```
+
+## d. Cara menjalankan dan menggunakan program
 Jalankan command berikut di dalam sebuah terminal
 ```bash
-    cd src/QuadtreeCompression
-    dotnet run
+    ./bin/QuadtreeCompression
 ```
 
 atau
 
-buka project menggunakan Microsoft Visual Studio, lalu jalankan melalui software tersebut.
+jalankan \bin\QuadtreeCompression.exe
 
-## d. Author/Identitas Pembuat
+## e. Author/Identitas Pembuat
 Muhammad Adli Arindra - 18222089
 Raudhah Yahya Kuddah - 13122003
